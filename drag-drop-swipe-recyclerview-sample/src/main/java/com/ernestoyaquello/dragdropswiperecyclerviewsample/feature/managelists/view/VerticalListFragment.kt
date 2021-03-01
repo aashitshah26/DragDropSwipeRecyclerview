@@ -25,6 +25,7 @@ class VerticalListFragment : BaseListFragment() {
     override fun setupListLayoutManager(list: DragDropSwipeRecyclerView) {
         // Set vertical linear layout manager
         list.layoutManager = LinearLayoutManager(activity)
+        list.longPressToStartDragging = true
     }
 
     override fun setupListOrientation(list: DragDropSwipeRecyclerView) {

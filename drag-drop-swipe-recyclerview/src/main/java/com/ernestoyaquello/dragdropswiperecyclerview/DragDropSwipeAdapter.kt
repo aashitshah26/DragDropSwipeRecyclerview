@@ -3,6 +3,7 @@ package com.ernestoyaquello.dragdropswiperecyclerview
 import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
+import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -95,6 +96,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      *         of the item that will be used for dragging is the main one.
      */
     protected abstract fun getViewToTouchToStartDraggingItem(item: T, viewHolder: U, position: Int): View?
+
+
+    protected abstract fun onItemClicked(item: T,viewHolder: U,position: Int)
 
     /**
      * Called automatically to get the DragDropSwipeDiffCallback<T> implementation that will be used
@@ -821,7 +825,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         if (recyclerView?.longPressToStartDragging != true)
             setItemDragAndDrop(viewToDrag, holder)
         else
-            setItemDragAndDropWithLongPress(viewToDrag, holder)
+            setItemDragAndDropWithLongPress(viewToDrag, holder,item,position)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -835,11 +839,16 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setItemDragAndDropWithLongPress(viewToDrag: View, holder: U) {
+    private fun setItemDragAndDropWithLongPress(viewToDrag: View, holder: U, item: T, position: Int) {
         val context = holder.itemView.context
         val longPressGestureListener = object : GestureDetector.SimpleOnGestureListener() {
             override fun onDown(event: MotionEvent) = !holder.isBeingSwiped && !holder.isBeingDragged
             override fun onLongPress(e: MotionEvent) = itemTouchHelper.startDrag(holder)
+            override fun onSingleTapUp(e: MotionEvent?): Boolean {
+                Log.e("value","helloo")
+                onItemClicked(item,holder,position)
+                return true
+            }
         }
         val longPressGestureDetector = GestureDetector(context, longPressGestureListener)
         longPressGestureDetector.setIsLongpressEnabled(true)

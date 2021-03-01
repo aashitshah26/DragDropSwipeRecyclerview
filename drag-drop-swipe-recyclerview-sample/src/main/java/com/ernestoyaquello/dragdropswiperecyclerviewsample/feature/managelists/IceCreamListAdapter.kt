@@ -7,6 +7,7 @@ import androidx.core.widget.ImageViewCompat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.R
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.data.model.IceCream
@@ -92,5 +93,9 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
 
     override fun onSwipeAnimationFinished(viewHolder: ViewHolder) {
         Logger.log("Swiping animation finished")
+    }
+
+    override fun onItemClicked(item: IceCream, viewHolder: ViewHolder, position: Int) {
+        Toast.makeText(viewHolder.dragIcon.context, "Clicked", Toast.LENGTH_SHORT).show()
     }
 }
